@@ -1,0 +1,8 @@
+import { Router } from 'sxpress'
+import { protect } from "../middleware/authMiddleware.js";
+import { allowRoles } from "../middleware/roleMiddleware.js";
+import { askAI } from "../controllers/aiController.js";
+
+const router = Router();
+router.post("/ask", protect, allowRoles("student"), askAI);
+export default router;

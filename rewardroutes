@@ -1,0 +1,22 @@
+
+
+import express from "express";
+
+import {
+  getRewards,
+  createReward,
+  updateReward,
+  deleteReward,
+  redeemReward
+} from "../reward/rewardController.js";
+
+const router = express.Router();
+
+router.get("/", getRewards);
+router.post("/", createReward);
+router.put("/:id", updateReward);
+router.delete("/:id", deleteReward);
+router.post("/:id/redeem", redeemReward);
+
+export default router;
+;

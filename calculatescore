@@ -1,0 +1,11 @@
+export function calculateScore(test, answers = []) {
+  let score = 0;
+  for (const answer of answers) {
+    const question = test.questions[answer.questionIndex];
+    if (question && Number(answer.selectedOption) === question.correctAnswer) {
+      score += question.marks;
+    }
+  }
+  const totalMarks = test.questions.reduce((sum, q) => sum + q.marks, 0);
+  return { score, totalMarks };
+}

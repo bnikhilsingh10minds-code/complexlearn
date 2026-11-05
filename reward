@@ -1,0 +1,8 @@
+import Reward from "../models/Reward.js";
+
+export async function listRewards(req, res, next) {
+  try {
+    const rewards = await Reward.find({ student: req.user._id }).sort({ createdAt: -1 });
+    res.json({ coins: req.user.coins, rewards });
+  } catch (err) { next(err); }
+}

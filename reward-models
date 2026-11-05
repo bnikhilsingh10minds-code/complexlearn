@@ -1,0 +1,10 @@
+import mongoose from "mongoose";
+
+const rewardSchema = new mongoose.Schema({
+  student: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  description: { type: String, required: true },
+  coins: { type: Number, required: true, min: 1 },
+  source: { type: String, enum: ["test", "task", "admin"], default: "test" }
+}, { timestamps: true });
+
+export default mongoose.model("Reward", rewardSchema)

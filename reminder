@@ -1,0 +1,19 @@
+import Reminder from "../models/Reminder.js";
+
+export async function listReminders(req, res, next) {
+  try {
+    const reminders = await Reminder.find({ student: req.user._id }).sort({ remindAt: 1 });
+    res.json({ reminders });
+  } catch (err) { next(err); }
+}
+
+export async function createReminder(req, res, next) {
+  try {
+    const { title, remindAt } = req.body;
+    if (!title || !remindAt || Number.isNaN(new Date(remindAt).getTime())) {
+      return res.status(400).json({ message: "Valid title and remindAt are required" });
+    }
+    const reminder = await Reminder.create({ student: req.user._id, title, remindAt });
+    res.status(201).json({ reminder });
+  } catch (err) { next(err); }
+}

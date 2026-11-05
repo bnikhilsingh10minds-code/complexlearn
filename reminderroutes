@@ -1,0 +1,9 @@
+import { Router } from "express";
+import { protect } from "../middleware/authMiddleware.js";
+import { allowRoles } from "../middleware/roleMiddleware.js";
+import { listReminders, createReminder } from "../controllers/reminderController.js";
+
+const router = Router();
+router.get("/", protect, allowRoles("student"), listReminders);
+router.post("/", protect, allowRoles("student"), createReminder);
+export default router;

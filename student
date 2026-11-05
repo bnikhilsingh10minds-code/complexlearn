@@ -1,0 +1,22 @@
+import User from "../models/User.js";
+import Test from "../models/Test.js";
+import Result from "../models/Result.js";
+import Material from "../models/Material.js";
+
+export async function dashboard(req, res, next) {
+  try {
+    const [testsTaken, results, availableTests, materials] = await Promise.all([
+      Result.countDocuments({ student: req.user._id }),
+      Result.find({ student: req.user._id }).select("score totalMarks"),
+      Test.countDocuments({ published: true, className: req.user.className }),
+      Material.countDocuments({ className: req.user.className })
+    ]);
+    const totalScore = results.reduce((sum, r) => sum + r.score, 0);
+    const totalMarks = results.reduce((sum, r) => sum + r.totalMarks, 0);
+    res.json({
+      student: { name: req.user.name, className: req.user.className, coins: req.user.coins },
+      testsTaken, availableTests, materials,
+      averagePercent: totalMarks ? Math.round((totalScore / totalMarks) * 100) : 0
+    });
+  } catch (err) { next(err); }
+}

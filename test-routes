@@ -1,0 +1,11 @@
+import { Router } from "express";
+import { protect } from "../middleware/authMiddleware.js";
+import { allowRoles } from "../middleware/roleMiddleware.js";
+import { createTest, publishTest, listPublishedTests, submitTest } from "../controllers/testController.js";
+
+const router = Router();
+router.get("/", protect, listPublishedTests);
+router.post("/", protect, allowRoles("teacher"), createTest);
+router.patch("/:id/publish", protect, allowRoles("teacher"), publishTest);
+router.post("/:id/submit", protect, allowRoles("student"), submitTest);
+export default router;

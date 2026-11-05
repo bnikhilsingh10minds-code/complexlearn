@@ -1,0 +1,10 @@
+import { Router } from "express";
+import { protect } from "../middleware/authMiddleware.js";
+import { allowRoles } from "../middleware/roleMiddleware.js";
+import { dashboard, listStudents } from "../controllers/teacherController.js";
+
+const router = Router();
+router.use(protect, allowRoles("teacher"));
+router.get("/dashboard", dashboard);
+router.get("/students", listStudents);
+export default router;

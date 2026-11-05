@@ -1,0 +1,39 @@
+# Complex Learn Backend
+
+Node.js + Express + MongoDB/Mongoose API scaffold.
+
+## Setup
+1. Install Node.js (LTS).
+2. In this folder run `npm install`.
+3. Copy `.env.example` to `.env`.
+4. Set `MONGO_URI` and a long random `JWT_SECRET`.
+5. Run `npm run dev`.
+
+API default: http://localhost:5000
+Health: GET `/api/health`
+
+## Routes
+- POST `/api/auth/register` — student registration
+- POST `/api/auth/login` — student or teacher login (`role` required)
+- GET `/api/auth/me` — current account (Bearer token)
+- GET `/api/students/dashboard` — student dashboard
+- GET `/api/teachers/dashboard` — teacher dashboard
+- GET `/api/teachers/students` — teacher student list
+- GET `/api/tests` — published tests (Bearer token)
+- POST `/api/tests` — teacher creates test
+- PATCH `/api/tests/:id/publish` — teacher publishes own test
+- POST `/api/tests/:id/submit` — student submits answers
+- GET `/api/results` — student own results or teacher results
+- GET `/api/rewards` — student's reward history
+- GET/POST `/api/materials` — list/upload material metadata
+- GET/POST `/api/timetable` — student timetable
+- GET/POST `/api/reminders` — student reminders
+- POST `/api/ai/ask` — AI placeholder (501 until provider integration)
+
+## Important
+- `.env` must never be committed or shared.
+- `fileUrl` is metadata only; implement secure file storage before allowing uploads.
+- AI endpoint is deliberately not connected to a provider yet.
+- For production, add rate limiting, validation, email verification, password reset,
+  audit logs, pagination, and stronger test/reward abuse prevention.
+- The demo coin rule awards 5 coins for >=80% test score; adjust to your project rules.

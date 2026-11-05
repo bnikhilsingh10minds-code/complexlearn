@@ -1,0 +1,27 @@
+import User from "../models/User.js";
+import Test from "../models/Test.js";
+import Result from "../models/Result.js";
+
+export async function dashboard(_req, res, next) {
+  try {
+    const [students, activeTests, results] = await Promise.all([
+      User.countDocuments({ role: "student" }),
+      Test.countDocuments({ published: true }),
+      Result.find().select("score totalMarks")
+    ]);
+    const totalScore = results.reduce((s, r) => s + r.score, 0);
+    const totalMarks = results.reduce((s, r) => s + r.totalMarks, 0);
+    res.json({
+      totalStudents: students,
+      activeTests,
+      averagePerformance: totalMarks ? Math.round(totalScore / totalMarks * 100) : 0
+    });
+  } catch (err) { next(err); }
+}
+
+export async function listStudents(_req, res, next) {
+  try {
+    const students = await User.find({ role: "student" }).select("name email className coins createdAt");
+    res.json({ students });
+  } catch (err) { next(err); }
+}

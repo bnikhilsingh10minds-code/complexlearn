@@ -1,0 +1,21 @@
+import Material from "../models/Material.js";
+
+export async function listMaterials(req, res, next) {
+  try {
+    const filter = {};
+    if (req.user.role === "student") filter.className = req.user.className;
+    const materials = await Material.find(filter).populate("uploadedBy", "name");
+    res.json({ materials });
+  } catch (err) { next(err); }
+}
+
+export async function createMaterial(req, res, next) {
+  try {
+    const { title, subject, className, fileUrl } = req.body;
+    if (!title || !subject || !className || !fileUrl) {
+      return res.status(400).json({ message: "Title, subject, class, and fileUrl are required" });
+    }
+    const material = await Material.create({ title, subject, className, fileUrl, uploadedBy: req.user._id });
+    res.status(201).json({ material });
+  } catch (err) { next(err); }
+}

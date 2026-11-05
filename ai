@@ -1,0 +1,13 @@
+export async function askAI(req, res) {
+  const { question } = req.body;
+  if (!question || typeof question !== "string" || !question.trim()) {
+    return res.status(400).json({ message: "Please provide a question" });
+  }
+
+  // Safe placeholder: connect a trusted AI provider on the backend before production.
+  // Do not expose provider API keys in React/browser code.
+  res.status(501).json({
+    message: "AI provider is not configured yet",
+    nextStep: "Implement aiService using your chosen provider and keep its API key in server/.env"
+  });
+}

@@ -1,0 +1,9 @@
+import { Router } from "express";
+import { protect } from "../middleware/authMiddleware.js";
+import { allowRoles } from "../middleware/roleMiddleware.js";
+import { listTimetable, createTimetable } from "../controllers/timetableController.js";
+
+const router = Router();
+router.get("/", protect, allowRoles("student"), listTimetable);
+router.post("/", protect, allowRoles("student"), createTimetable);
+export default router;

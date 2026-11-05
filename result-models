@@ -1,0 +1,13 @@
+import mongoose from "mongoose";
+
+const resultSchema = new mongoose.Schema({
+  student: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  test: { type: mongoose.Schema.Types.ObjectId, ref: "Test", required: true },
+  answers: [{ questionIndex: Number, selectedOption: Number }],
+  score: { type: Number, required: true },
+  totalMarks: { type: Number, required: true }
+}, { timestamps: true });
+
+resultSchema.index({ student: 1, test: 1 }, { unique: true });
+
+export default mongoose.model("Result", resultSchema);
